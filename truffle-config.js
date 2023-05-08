@@ -135,6 +135,7 @@ module.exports = {
       network_id: "1515"
 
     }
+    
   },
   // Truffle DB is currently disabled by default; to enable it, change enabled:
   // false to enabled: true. The default storage location can also be

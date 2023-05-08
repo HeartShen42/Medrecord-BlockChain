@@ -67,12 +67,13 @@ contract Ledger {
         require(references[_id].relationship != address(0));
         require(references[_id].payment[_viewer] == true);
 
-        //remove _id from getSharedRecordReferences
+        // remove _id from getSharedRecordReferences
         removeSharedRecordReference(_id, _viewer);
-        //to-do: send transaction to relationship
+        // send transaction to relationship
         address targetAddr = references[_id].relationship;
         Relationship TargetR = Relationship(targetAddr);
         TargetR.addAnonymousViewer(msg.sender);
+
         references[_id].payment[_viewer] = false;
         return true;
     }
