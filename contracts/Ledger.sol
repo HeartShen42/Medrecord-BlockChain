@@ -36,7 +36,7 @@ contract Ledger {
         // check whether the validator in the references
         require(references[_id].relationship != address(0));
         require(references[_id].payment[_validator] == false);
-
+        
         address payer = tx.origin;
 
         if(references[_id].payment[payer] == true){
@@ -70,7 +70,9 @@ contract Ledger {
         //remove _id from getSharedRecordReferences
         removeSharedRecordReference(_id, _viewer);
         //to-do: send transaction to relationship
-
+        address targetAddr = references[_id].relationship;
+        Relationship TargetR = Relationship(targetAddr);
+        TargetR.addAnonymousViewer(msg.sender);
         references[_id].payment[_viewer] = false;
         return true;
     }
@@ -81,6 +83,10 @@ contract Ledger {
 
     function getCoinbase() public constant returns (address) {
         return coinbase;
+    }
+
+    function checkTargetRecordValidator(uint256 _id, address target) returns (bool){
+        return references[_id].payment[target];
     }
     
     function getSharedRecordReferences() public constant returns (uint256[]) {

@@ -25,7 +25,6 @@ contract("Ledger", (accounts) => {
     const record3 = '3';
 
     beforeEach(async () => {
-        console.log('accounts', accounts);
         relationship1 = await Relationship.new(provider1, record1, { from: patient1 });
         relationship2 = await Relationship.new(provider1, record2, { from: patient1 });
         relationship3 = await Relationship.new(provider2, record3, { from: patient2 });
