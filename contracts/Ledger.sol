@@ -74,6 +74,10 @@ contract Ledger {
         return coinbase;
     }
 
+    function checkTargetRecordValidator(uint256 _id, address target) returns (bool){
+        return references[_id].payment[target];
+    }
+
     function getOwnedRecordReferences() public constant returns (uint256[]) {
         return ownedRecordReferences[msg.sender];
     }

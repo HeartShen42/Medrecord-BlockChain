@@ -6,6 +6,29 @@
 	"output": {
 		"abi": [
 			{
+				"constant": false,
+				"inputs": [
+					{
+						"name": "_id",
+						"type": "uint256"
+					},
+					{
+						"name": "target",
+						"type": "address"
+					}
+				],
+				"name": "checkTargetRecordValidator",
+				"outputs": [
+					{
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
 				"constant": true,
 				"inputs": [],
 				"name": "getOwnedRecordReferences",
@@ -162,9 +185,9 @@
 	},
 	"sources": {
 		"Ledger.sol": {
-			"keccak256": "0x2614dd431430af5973d7c02e7c6a83f1e83d09326ea16ed7b076037b9b9fe141",
+			"keccak256": "0x9e942af2e7dfd92537745007c0230cf91b9489aa782a7220c38f9490f133efce",
 			"urls": [
-				"bzzr://7bc0663756f0d87be40406ee2f0669f750a79a98b83060d48d46b23c3d1674f8"
+				"bzzr://300690b90a7052490bd9cf9c205a695fffd9db429bf68b18a7d9baf9e5cc0bc5"
 			]
 		},
 		"Relationship.sol": {
