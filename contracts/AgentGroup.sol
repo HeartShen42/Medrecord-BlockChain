@@ -1,5 +1,5 @@
 pragma solidity ^0.4.15;
-
+//Ignore
 //Represents a set of agents who represent themself as one
 contract AgentGroup {
   address[] public agents;

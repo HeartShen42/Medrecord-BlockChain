@@ -11,8 +11,8 @@ contract Ledger {
     // mapping( => bool) public isReference;
     mapping(uint256 => reference) references; // the references of the payments
 
-    mapping(address => uint256[]) ownedRecordReferences; // the references of the owned records
-    mapping(address => uint256[]) sharedRecordReferences; // the references of the shared records
+    // mapping(address => uint256[]) ownedRecordReferences; // the references of the owned records
+    mapping(address => uint256[]) sharedRecordReferences; // records rewarded from others
 
     address public coinbase;
 
@@ -22,6 +22,7 @@ contract Ledger {
         require(_relationship != address(0));
         Relationship relationship = Relationship(_relationship);
         require(relationship.patron() == tx.origin);
+
         //check whether the hash of the relastionship is already in the references
         uint256 _relationshipHash = uint256(keccak256(_relationship));
         require(references[_relationshipHash].relationship == address(0));
@@ -39,7 +40,11 @@ contract Ledger {
         address payer = tx.origin;
 
         if(references[_id].payment[payer] == true){
-            
+            //pay from shared records
+            //remove _id from sharedRecordReferences, and add it to validator's sharedRecordReferences
+            removeSharedRecordReference(_id, payer);
+            sharedRecordReferences[_validator].push(_id);
+
             references[_id].payment[payer] = false;
             references[_id].payment[_validator] = true;
             coinbase = _validator;
@@ -47,6 +52,9 @@ contract Ledger {
         }
         Relationship relationship = Relationship(references[_id].relationship);
         if(relationship.patron() == payer){
+            //pay from owned records
+            sharedRecordReferences[_validator].push(_id);
+
             references[_id].payment[_validator] = true;
             coinbase = _validator;
             return true;
@@ -58,6 +66,9 @@ contract Ledger {
         // check whether the validator in the references
         require(references[_id].relationship != address(0));
         require(references[_id].payment[_viewer] == true);
+
+        //remove _id from getSharedRecordReferences
+        removeSharedRecordReference(_id, _viewer);
         //to-do: send transaction to relationship
 
         references[_id].payment[_viewer] = false;
@@ -71,12 +82,23 @@ contract Ledger {
     function getCoinbase() public constant returns (address) {
         return coinbase;
     }
-
-    function getOwnedRecordReferences() public constant returns (uint256[]) {
-        return ownedRecordReferences[msg.sender];
-    }
     
     function getSharedRecordReferences() public constant returns (uint256[]) {
         return sharedRecordReferences[msg.sender];
+    }
+
+    function removeSharedRecordReference(uint256 _id, address _owner) {
+        uint256[] sharedRecords = sharedRecordReferences[_owner];
+        bool exist = false;
+        for(uint256 i = 0; i < sharedRecords.length; i++){
+            if(sharedRecords[i] == _id){
+                exist = true;
+                // remove the reference from ownedRecordReferences
+                sharedRecordReferences[_owner][i] = sharedRecordReferences[_owner][sharedRecords.length - 1];
+                delete sharedRecordReferences[_owner][sharedRecords.length - 1];
+                break;
+            }
+        }
+        require(exist == true);
     }
 }
