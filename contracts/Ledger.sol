@@ -11,6 +11,11 @@ contract Ledger {
     // mapping( => bool) public isReference;
     mapping(uint256 => reference) references; // the references of the payments
 
+    mapping(address => uint256[]) ownedRecordReferences; // the references of the owned records
+    mapping(address => uint256[]) sharedRecordReferences; // the references of the shared records
+
+    address public coinbase;
+
     function addReference(address _relationship) public {
         // check the reference legality(exist in the sender's relationship)
         // check whether the sender is the patron of the relationship
@@ -25,18 +30,25 @@ contract Ledger {
         references[_relationshipHash].relationship = _relationship;
     }
 
-    function addPayment(address _validator, uint256 _id, address _payer) public constant returns (bool) {
+    function addPayment(address _validator, uint256 _id) public constant returns (bool) {
+        
         // check whether the validator in the references
         require(references[_id].relationship != address(0));
         require(references[_id].payment[_validator] == false);
-        if(references[_id].payment[_payer] == true){
-            references[_id].payment[_payer] = false;
+
+        address payer = tx.origin;
+
+        if(references[_id].payment[payer] == true){
+            
+            references[_id].payment[payer] = false;
             references[_id].payment[_validator] = true;
+            coinbase = _validator;
             return true;
         }
         Relationship relationship = Relationship(references[_id].relationship);
-        if(relationship.patron() == _payer){
+        if(relationship.patron() == payer){
             references[_id].payment[_validator] = true;
+            coinbase = _validator;
             return true;
         }
         return false;
@@ -54,5 +66,17 @@ contract Ledger {
 
     function getRelationship(uint256 _id) public constant returns (address) {
         return references[_id].relationship;
+    }
+
+    function getCoinbase() public constant returns (address) {
+        return coinbase;
+    }
+
+    function getOwnedRecordReferences() public constant returns (uint256[]) {
+        return ownedRecordReferences[msg.sender];
+    }
+    
+    function getSharedRecordReferences() public constant returns (uint256[]) {
+        return sharedRecordReferences[msg.sender];
     }
 }
