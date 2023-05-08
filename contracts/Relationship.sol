@@ -17,11 +17,13 @@ contract Relationship {
 
     address[][] viewerGroups;
     
-    mapping(address => bool) public isAnonymousViewer;
+    mapping(address => bool) isAnonymousViewer;
+    
+    //mapping(string => address) public AnonymousViewerByName;
 
     mapping(address => bool) public isViewer;
     mapping(address => Viewer) viewerInfo;
-    mapping(string => address) viewerByName;
+    //mapping(string => address) viewerByName;
 
     uint256 constant UINT256_MAX = ~uint256(0);
 
@@ -30,11 +32,28 @@ contract Relationship {
         _;
     }
 
-    function Relationship(address _provider, string _id, address _ledger) public {
+    modifier FromLedger() {
+        if(msg.sender != ledger) revert();
+        _;
+    }
+
+    function Relationship(address _provider, string _id, address _ledger, uint256 _paymentId) public {
         patron = msg.sender;
         provider = _provider;
         recordId = _id;
         ledger = _ledger;
+
+        if (_paymentId == 0 ){
+        return;
+        }
+
+        //pay the validator
+        address validator;
+        validator = block.coinbase;
+
+        Ledger ledgerContract = Ledger(ledger);
+        bool result = ledgerContract.addPayment(validator, _paymentId);
+        require(result);
     }   
     // need tx fee
 
@@ -93,6 +112,10 @@ function removeViewerGroup(uint viewerGroup, uint256 _paymentId) public isPatron
     payValidator(_paymentId);
 }
 // need tx fee
+function addAnonymousViewer(address ViewerAddr) public FromLedger {
+    require(!isAnonymousViewer[ViewerAddr]);
+    isAnonymousViewer[ViewerAddr] = true;
+}
 
 function addViewer(string name, uint viewerGroup, address viewer, string provAddr, uint256 _paymentId) public isPatron {
     require(!isViewer[viewer]);
@@ -139,12 +162,18 @@ function getViewer(uint group, uint index) public constant returns(address) {
   return viewerGroups[group][index];
 }
 
-function getViewerByName(string name) public constant returns(address) {
-    return viewerByName[name];
-}
+// Something is wrong with this part only can get value but cannot add value
+// function getViewerByName(string name) public constant returns(address) {
+//     return viewerByName[name];
+// }
 
 function getViewerName(address addr) public constant returns(string) {
     return viewerInfo[addr].name;
+}
+
+
+function checkAnonymousViewer(address addr) public constant returns(bool){
+    return isAnonymousViewer[addr];
 }
 
 function terminate() public {

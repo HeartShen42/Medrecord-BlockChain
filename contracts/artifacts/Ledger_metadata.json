@@ -1,0 +1,178 @@
+{
+	"compiler": {
+		"version": "0.4.26+commit.4563c3fc"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "getOwnedRecordReferences",
+				"outputs": [
+					{
+						"name": "",
+						"type": "uint256[]"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"name": "_relationship",
+						"type": "address"
+					}
+				],
+				"name": "addReference",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"name": "_id",
+						"type": "uint256"
+					}
+				],
+				"name": "getRelationship",
+				"outputs": [
+					{
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "getSharedRecordReferences",
+				"outputs": [
+					{
+						"name": "",
+						"type": "uint256[]"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"name": "_validator",
+						"type": "address"
+					},
+					{
+						"name": "_id",
+						"type": "uint256"
+					}
+				],
+				"name": "addPayment",
+				"outputs": [
+					{
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "coinbase",
+				"outputs": [
+					{
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"name": "_id",
+						"type": "uint256"
+					},
+					{
+						"name": "_viewer",
+						"type": "address"
+					}
+				],
+				"name": "viewRecord",
+				"outputs": [
+					{
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "getCoinbase",
+				"outputs": [
+					{
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"methods": {}
+		},
+		"userdoc": {
+			"methods": {}
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"Ledger.sol": "Ledger"
+		},
+		"evmVersion": "byzantium",
+		"libraries": {},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"Ledger.sol": {
+			"keccak256": "0x2614dd431430af5973d7c02e7c6a83f1e83d09326ea16ed7b076037b9b9fe141",
+			"urls": [
+				"bzzr://7bc0663756f0d87be40406ee2f0669f750a79a98b83060d48d46b23c3d1674f8"
+			]
+		},
+		"Relationship.sol": {
+			"keccak256": "0x6ba19c3a4e05f96f0508ff8500d8a15e28924b2fc562679aa8d68621af01874a",
+			"urls": [
+				"bzzr://41d1c558c1f05d87db50fa86e091cca15e51ae170c0344d8b10f35905105adcb"
+			]
+		}
+	},
+	"version": 1
+}
