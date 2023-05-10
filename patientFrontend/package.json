@@ -1,0 +1,7 @@
+"scripts": {
+    "start": "react-scripts start --proxy-config proxy.conf.json",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  

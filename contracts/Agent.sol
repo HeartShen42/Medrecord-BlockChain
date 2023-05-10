@@ -38,7 +38,7 @@ contract Agent {
   }
 
 
-  function addRelationship(address r) public isOwner {
+  function addRelationship(address r) public {
     relationships.push(r);
   }
 

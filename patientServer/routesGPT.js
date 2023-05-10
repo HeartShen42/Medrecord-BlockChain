@@ -28,8 +28,6 @@ let relationship = [];
 
 let records = [];
 
-let unprossedRecords = [];
-
 router.post('/register', async (req, res) => {
     try {
         console.log('register');
@@ -46,52 +44,6 @@ router.post('/register', async (req, res) => {
     } catch (error) {
         console.error('Error deploying contract:', error);
         res.status(500).json({ error: 'Error deploying contract' });
-    }
-});
-
-//add record
-router.post('/addRecord', async (req, res) => {
-    try {
-        console.log('addRecord');
-        const { record, providerAddress } = req.body;
-        //send relationship transaction
-        const relationshipDeployOptions = {
-            data: relationshipABI.bytecode,
-            arguments: [providerAddress, record, ledgerAddress, 0]
-        };
-        console.log('relationshipDeployOptions', relationshipDeployOptions.arguments);
-        const newRelationship = await relationshipContract.deploy(relationshipDeployOptions).send({
-            from: mainAddress,
-            gas: 4000000,
-        });
-
-        //agent add relationship
-        await agent.methods.addRelationship(newRelationship.options.address).send({
-            from: mainAddress,
-            gas: 4000000,
-        });
-
-        records.push(record);
-        relationship.push(newRelationship);
-        res.json({ message: 'add record successfully',
-            relationshipAddress: newRelationship.options.address, });
-    } catch (error) {
-        console.error('Error adding record:', error);
-        res.status(500).json({ error: 'Error adding record' });
-    }
-});
-
-//receive add record request, add record to unprocessed record list
-router.post('/addRecordRequest', async (req, res) => {
-    try {
-        console.log('addRecordRequest');
-        const { record, providerAddress } = req.body;
-        //update unprocessed record list
-        unprossedRecords.push({record, providerAddress});
-        res.json({ message: 'add record request successfully' });
-    } catch (error) {
-        console.error('Error adding record request:', error);
-        res.status(500).json({ error: 'Error adding record request' });
     }
 });
 
@@ -128,18 +80,6 @@ router.post('/addRecordPay', async (req, res) => {
         res.status(500).json({ error: 'Error adding record' });
     }
 });
-// //add record
-// router.post('/addRecord', async (req, res) => {
-//     try {
-//         console.log('addRecord');
-//         const { record } = req.body;
-//         records.push(record);
-//         res.json({ message: 'add record successfully' });
-//     } catch (error) {
-//         console.error('Error adding record:', error);
-//         res.status(500).json({ error: 'Error adding record' });
-//     }
-// });
 
 async function fetchRelationshipData(contractAddress) {
     const relationshipContract = new web3.eth.Contract(relationshipABI.abi, contractAddress);
