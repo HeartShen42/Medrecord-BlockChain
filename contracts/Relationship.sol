@@ -9,21 +9,14 @@ contract Relationship {
     string public recordId; //mapping to the record in the provider's system
     
     address public ledger; //the ledger contract address
-
-    struct Viewer {
-        string name;
-        string providerAddr; //the real provider address encypted so only the viewer can read
-    }
-
-    address[][] viewerGroups;
     
     mapping(address => bool) isAnonymousViewer;
     
     //mapping(string => address) public AnonymousViewerByName;
 
     mapping(address => bool) public isViewer;
-    mapping(address => Viewer) viewerInfo;
-    //mapping(string => address) viewerByName;
+    mapping(address => string) viewerInfo;
+
 
     uint256 constant UINT256_MAX = ~uint256(0);
 
@@ -88,79 +81,30 @@ function payValidator(uint256 _paymentId) public isPatron {
     require(result);
 }
 
-function addViewerGroup(uint256 _paymentId) public isPatron {
-    viewerGroups.length += 1;
-    
-    payValidator(_paymentId);
-}
-// need tx fee
-
-function removeViewerGroup(uint viewerGroup, uint256 _paymentId) public isPatron {
-    uint numViewers = viewerGroups[viewerGroup].length;
-    uint i;
-    for(i = 0; i < numViewers; i++) {
-        isViewer[viewerGroups[viewerGroup][i]] = false;
-    }
-
-    uint numGroups = viewerGroups.length;
-    for(i = viewerGroup+1; i < numGroups; i++) {
-        viewerGroups[i - 1] = viewerGroups[i];
-    }
-    delete(viewerGroups[numGroups-1]);
-    viewerGroups.length -= 1;
-
-    payValidator(_paymentId);
-}
 // need tx fee
 function addAnonymousViewer(address ViewerAddr) public FromLedger {
     require(!isAnonymousViewer[ViewerAddr]);
     isAnonymousViewer[ViewerAddr] = true;
 }
 
-function addViewer(string name, uint viewerGroup, address viewer, string provAddr, uint256 _paymentId) public isPatron {
+function addViewer(string name, address viewer, uint256 _paymentId) public isPatron {
     require(!isViewer[viewer]);
 
     isViewer[viewer] = true;
-    viewerGroups[viewerGroup].push(viewer);
-    viewerInfo[viewer] = Viewer(name, provAddr);
+    viewerInfo[viewer] = name;
 
     payValidator(_paymentId);
 }
 // need tx fee
 
-function removeViewer(uint viewerGroup, address viewer, uint256 _paymentId) public isPatron {
+function removeViewer(address viewer, uint256 _paymentId) public isPatron {
     require(isViewer[viewer]);
-
     isViewer[viewer] = false;
-    uint numViewers = viewerGroups[viewerGroup].length;
-    bool overwrite = false;
-    for(uint i = 0; i < numViewers; i++) {
-        if(overwrite) {
-            viewerGroups[viewerGroup][i - 1] = viewerGroups[viewerGroup][i];
-        }
-        if(viewerGroups[viewerGroup][i] == viewer) {
-            overwrite = true;
-        }
-    }
-    delete(viewerGroups[viewerGroup][numViewers-1]);
-    viewerGroups[viewerGroup].length -= 1;
     delete(viewerInfo[viewer]);
 
     payValidator(_paymentId);
 }
 // need tx fee
-
-function getNumViewerGroups() public constant returns(uint) {
-    return viewerGroups.length;
-}
-
-function getNumViewers(uint group) public constant returns(uint) {
-    return viewerGroups[group].length;
-}
-
-function getViewer(uint group, uint index) public constant returns(address) {
-  return viewerGroups[group][index];
-}
 
 // Something is wrong with this part only can get value but cannot add value
 // function getViewerByName(string name) public constant returns(address) {
@@ -168,9 +112,12 @@ function getViewer(uint group, uint index) public constant returns(address) {
 // }
 
 function getViewerName(address addr) public constant returns(string) {
-    return viewerInfo[addr].name;
+    return viewerInfo[addr];
 }
 
+function checkViewer(address addr) public constant returns(bool){
+    return isViewer[addr];
+}
 
 function checkAnonymousViewer(address addr) public constant returns(bool){
     return isAnonymousViewer[addr];

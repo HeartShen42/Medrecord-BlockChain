@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Web3 = require('web3');
+const axios = require('axios');
 
 const fs = require('fs');
 const dotenv = require('dotenv');
@@ -99,7 +100,7 @@ router.post('/addRecordRequest', async (req, res) => {
 router.post('/addRecordPay', async (req, res) => {
     try {
         console.log('addRecord');
-        const { record, providerAddress, payment } = req.body;
+        const { record, providerAddress, payment, providerUrl } = req.body;
         //send relationship transaction
         const paymentAddress = getRelationshipAddress(payment);
         const paymentAddressHash = web3.utils.keccak256(paymentAddress);
@@ -119,6 +120,10 @@ router.post('/addRecordPay', async (req, res) => {
             gas: 4000000,
         });
 
+        //send the new relationship address to provider(providerUrl/addRelationship)
+        await axios.post(providerUrl + '/addRelationInAgent', {
+            newRelashionship: newRelationship.options.address,
+        });
         records.push(record);
         relationship.push(newRelationship);
         res.json({ message: 'add record successfully',
@@ -128,18 +133,6 @@ router.post('/addRecordPay', async (req, res) => {
         res.status(500).json({ error: 'Error adding record' });
     }
 });
-// //add record
-// router.post('/addRecord', async (req, res) => {
-//     try {
-//         console.log('addRecord');
-//         const { record } = req.body;
-//         records.push(record);
-//         res.json({ message: 'add record successfully' });
-//     } catch (error) {
-//         console.error('Error adding record:', error);
-//         res.status(500).json({ error: 'Error adding record' });
-//     }
-// });
 
 async function fetchRelationshipData(contractAddress) {
     const relationshipContract = new web3.eth.Contract(relationshipABI.abi, contractAddress);
@@ -151,7 +144,7 @@ async function fetchRelationshipData(contractAddress) {
       recordId,
       provider,
     };
-  }
+}
 
 //get records on the chain
 router.get('/getRecords', async (req, res) => {
@@ -204,6 +197,32 @@ router.post('/authorizeRecord', async (req, res) => {
     }
 });
 
+router.post('/addViewer',async(req,res)=>{
+    try{
+        const{name, viewerAddr, viewRecordID, payRecordID, providerUrl} = req.body;
+        //ViewerAddress
+        const relationshipViewerAddress = getRelationshipAddress(viewRecordID);
+        //Pay record Address
+        const relationshipPayAddress = getRelationshipAddress(payRecordID);
+        const relationshipContract = await new web3.eth.Contract(relationshipABI.abi, relationshipViewerAddress);
+        const relationshipHash=web3.utils.keccak256(relationshipPayAddress);
+        //add Viewer
+        await relationshipContract.methods.addViewer(name, viewerAddr, relationshipHash).send({
+            from: mainAddress,
+            gas: 4000000,
+        });
+        console.log('addViewer successfully, sending req to viewer');
+        //add new relationship address to Viewer agent.relationships
+        await axios.post(providerUrl + '/addRelationInAgent', {
+            newRelashionship: relationshipViewerAddress,
+        });
+        res.json({ message: 'add viewer successfully', relationshipAddress: relationshipViewerAddress });
+    }catch(error){
+        console.error('Error adding viewer:', error);
+        res.status(500).json({ error: 'Error adding viewer' });
+    }
+        
+});
 
 //get records
 router.get('/getLocalRecords', async (req, res) => {
