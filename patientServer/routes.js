@@ -34,7 +34,6 @@ router.post('/register', async (req, res) => {
     }
 });
 
-
 //add record
 router.post('/addRecord', async (req, res) => {
     try {
