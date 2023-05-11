@@ -1,0 +1,72 @@
+=============== May 8, 2023 (CDT) ===============
+14:16:33.021294 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+14:16:33.094139 db@open opening
+14:16:33.095643 version@stat F·[] S·0B[] Sc·[]
+14:16:33.114550 db@janitor F·2 G·0
+14:16:33.114631 db@open done T·20.444583ms
+=============== May 8, 2023 (CDT) ===============
+14:16:52.727011 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+14:16:52.727421 version@stat F·[] S·0B[] Sc·[]
+14:16:52.727434 db@open opening
+14:16:52.727466 journal@recovery F·1
+14:16:52.727830 journal@recovery recovering @1
+14:16:52.746459 memdb@flush created L0@2 N·1 S·123B "version,v1":"version,v1"
+14:16:52.747055 version@stat F·[1] S·123B[123B] Sc·[0.25]
+14:16:52.822367 db@janitor F·3 G·0
+14:16:52.822432 db@open done T·94.98575ms
+14:16:53.329093 db@close closing
+14:16:53.329398 db@close done T·301.5µs
+=============== May 8, 2023 (CDT) ===============
+14:17:16.965456 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+14:17:16.965801 version@stat F·[1] S·123B[123B] Sc·[0.25]
+14:17:16.965812 db@open opening
+14:17:16.965845 journal@recovery F·1
+14:17:16.966112 journal@recovery recovering @3
+14:17:16.983847 memdb@flush created L0@5 N·5 S·260B "loc..seq,v3":"n:\xe9..ong,v4"
+14:17:16.984266 version@stat F·[2] S·383B[383B] Sc·[0.50]
+14:17:17.061007 db@janitor F·4 G·0
+14:17:17.061077 db@open done T·95.253417ms
+=============== May 9, 2023 (CDT) ===============
+03:20:52.712175 memdb@flush N·53549 S·3MiB
+03:20:52.756521 memdb@flush created L0@9 N·53549 S·492KiB "loc..seq,v22":"n:\xf4..ail,v418"
+03:20:52.756667 version@stat F·[3] S·492KiB[492KiB] Sc·[0.75]
+03:20:52.774756 memdb@flush committed F·1 T·62.2075ms
+03:20:52.786383 journal@remove removed @6
+03:21:08.744114 table@compaction L0·2 -> L1·0 S·492KiB Q·53575
+03:21:08.780143 table@build created L1@10 N·26 S·1KiB "loc..seq,v22":"n:\xf4..ail,v53535"
+03:21:08.780288 version@stat F·[1 1] S·1KiB[123B 1KiB] Sc·[0.25 0.00]
+03:21:08.799410 table@compaction committed F-1 S-491KiB Ke·0 D·53528 T·55.079166ms
+03:21:08.800162 table@remove removed @9
+=============== May 10, 2023 (CDT) ===============
+05:01:02.886000 memdb@flush N·53182 S·3MiB
+05:01:02.929730 memdb@flush created L0@12 N·53182 S·489KiB "n:\b..:v4,v106681":"n:\xf4..ail,v53594"
+05:01:02.929862 version@stat F·[2 1] S·491KiB[490KiB 1KiB] Sc·[0.50 0.00]
+05:01:02.966796 memdb@flush committed F·1 T·80.475917ms
+05:01:02.979039 journal@remove removed @8
+05:08:28.359243 table@compaction L0·1 -> L1·1 S·491KiB Q·106836
+05:08:28.398241 table@build created L1@13 N·28 S·1KiB "loc..seq,v22":"n:\xf4..ail,v106722"
+05:08:28.398355 version@stat F·[1 1] S·1KiB[123B 1KiB] Sc·[0.25 0.00]
+05:08:28.417332 table@compaction committed F-1 S-489KiB Ke·0 D·53180 T·56.913251ms
+05:08:28.418011 table@remove removed @12
+05:08:28.419688 table@remove removed @10
+19:56:57.797631 db@close closing
+19:56:57.797853 db@close done T·222.625µs
+=============== May 10, 2023 (CDT) ===============
+20:11:28.934145 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+20:11:28.934866 version@stat F·[1 1] S·1KiB[123B 1KiB] Sc·[0.25 0.00]
+20:11:28.934883 db@open opening
+20:11:28.934952 journal@recovery F·1
+20:11:28.935531 journal@recovery recovering @11
+20:11:29.032874 memdb@flush created L0@14 N·48823 S·449KiB "n:\b..:v4,v155304":"n:\xf4..ail,v106749"
+20:11:29.033633 version@stat F·[2 1] S·450KiB[449KiB 1KiB] Sc·[0.50 0.00]
+20:11:29.097845 db@janitor F·6 G·1
+20:11:29.097878 db@janitor removing table-5
+20:11:29.097996 db@open done T·163.111166ms
+20:11:29.100788 table@compaction L0·1 -> L1·1 S·450KiB Q·155564
+20:11:29.143882 table@build created L1@17 N·29 S·1KiB "loc..seq,v22":"n:\xf4..ail,v155479"
+20:11:29.143988 version@stat F·[1 1] S·1KiB[123B 1KiB] Sc·[0.25 0.00]
+20:11:29.178891 table@compaction committed F-1 S-449KiB Ke·0 D·48822 T·78.025417ms
+20:11:29.182796 table@remove removed @13
+=============== May 11, 2023 (CDT) ===============
+05:27:28.642530 db@close closing
+05:27:28.643167 db@close done T·632.834µs

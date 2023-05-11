@@ -1,0 +1,78 @@
+=============== May 7, 2023 (CDT) ===============
+16:14:11.709105 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+16:14:11.789988 db@open opening
+16:14:11.791291 version@stat F·[] S·0B[] Sc·[]
+16:14:11.810176 db@janitor F·2 G·0
+16:14:11.810401 db@open done T·20.384291ms
+16:14:12.025159 db@close closing
+16:14:12.025294 db@close done T·134.709µs
+=============== May 7, 2023 (CDT) ===============
+16:19:19.944944 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+16:19:19.945437 version@stat F·[] S·0B[] Sc·[]
+16:19:19.945450 db@open opening
+16:19:19.945488 journal@recovery F·1
+16:19:19.946528 journal@recovery recovering @1
+16:19:19.967224 memdb@flush created L0@2 N·367 S·41KiB "\x02d\xfc..\x19Ba,v172":"\xfe\x88\xcf..H\xef\xcc,v105"
+16:19:19.968610 version@stat F·[1] S·41KiB[41KiB] Sc·[0.25]
+16:19:20.042766 db@janitor F·3 G·0
+16:19:20.042794 db@open done T·97.339625ms
+16:19:25.744809 db@close closing
+16:19:25.745006 db@close done T·196.041µs
+=============== May 7, 2023 (CDT) ===============
+16:22:23.023349 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+16:22:23.023831 version@stat F·[1] S·41KiB[41KiB] Sc·[0.25]
+16:22:23.023847 db@open opening
+16:22:23.023885 journal@recovery F·1
+16:22:23.024875 journal@recovery recovering @3
+16:22:23.044304 memdb@flush created L0@5 N·265 S·11KiB "Dat..ion,v369":"unc..own,v374"
+16:22:23.045473 version@stat F·[2] S·52KiB[52KiB] Sc·[0.50]
+16:22:23.120684 db@janitor F·4 G·0
+16:22:23.120716 db@open done T·96.858542ms
+16:22:31.209677 db@close closing
+16:22:31.210056 db@close done T·378.583µs
+=============== May 7, 2023 (CDT) ===============
+16:25:11.440938 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+16:25:11.441522 version@stat F·[2] S·52KiB[52KiB] Sc·[0.50]
+16:25:11.441536 db@open opening
+16:25:11.441579 journal@recovery F·1
+16:25:11.442596 journal@recovery recovering @6
+16:25:11.463496 memdb@flush created L0@8 N·1 S·204B "unc..own,v635":"unc..own,v635"
+16:25:11.464687 version@stat F·[3] S·52KiB[52KiB] Sc·[0.75]
+16:25:11.540928 db@janitor F·5 G·0
+16:25:11.540976 db@open done T·99.426959ms
+16:25:17.270449 db@close closing
+16:25:17.270674 db@close done T·224.375µs
+=============== May 8, 2023 (CDT) ===============
+14:22:26.362355 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+14:22:26.362939 version@stat F·[3] S·52KiB[52KiB] Sc·[0.75]
+14:22:26.362957 db@open opening
+14:22:26.363016 journal@recovery F·1
+14:22:26.364426 journal@recovery recovering @9
+14:22:26.386908 memdb@flush created L0@11 N·1 S·209B "unc..own,v637":"unc..own,v637"
+14:22:26.388427 version@stat F·[4] S·52KiB[52KiB] Sc·[1.00]
+14:22:26.463607 db@janitor F·6 G·0
+14:22:26.463643 db@open done T·100.673417ms
+14:22:26.463683 table@compaction L0·4 -> L1·0 S·52KiB Q·638
+14:22:26.519818 table@build created L1@14 N·629 S·52KiB "\x02d\xfc..\x19Ba,v172":"\xfe\x88\xcf..H\xef\xcc,v105"
+14:22:26.519880 version@stat F·[0 1] S·52KiB[0B 52KiB] Sc·[0.00 0.00]
+14:22:26.537101 table@compaction committed F-3 S-458B Ke·0 D·5 T·73.381125ms
+14:22:26.537433 table@remove removed @8
+14:22:26.554836 table@remove removed @5
+14:22:26.555379 table@remove removed @2
+=============== May 10, 2023 (CDT) ===============
+19:54:57.088922 db@close closing
+19:54:57.089993 db@close done T·1.279ms
+=============== May 10, 2023 (CDT) ===============
+20:01:00.829924 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+20:01:00.830357 version@stat F·[0 1] S·52KiB[0B 52KiB] Sc·[0.00 0.00]
+20:01:00.830371 db@open opening
+20:01:00.830413 journal@recovery F·1
+20:01:00.831495 journal@recovery recovering @12
+20:01:00.897063 memdb@flush created L0@15 N·17667 S·4MiB "\x00\x0e\xb4..\f[\x8c,v16121":"\xff\xf9\xcd..\x89:\xfb,v17430"
+20:01:00.898679 version@stat F·[1 1] S·4MiB[4MiB 52KiB] Sc·[0.25 0.00]
+20:01:00.973156 db@janitor F·5 G·1
+20:01:00.973171 db@janitor removing table-11
+20:01:00.973249 db@open done T·142.866083ms
+=============== May 11, 2023 (CDT) ===============
+05:27:24.665583 db@close closing
+05:27:24.666791 db@close done T·1.214708ms
