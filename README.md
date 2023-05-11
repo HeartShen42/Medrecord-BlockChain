@@ -97,7 +97,7 @@ Run `truffle version` to check successfully installed.
 
 ### 2.1 Launching the Bootnode
 
-We've basically configured the blockchain, so just head over to github and download it. The link is <https://github.com/HeartShen42/Medrecord-BlockChain>. If the link is not available, you can also use google drive to download this zip file. The link is:
+We've basically configured the blockchain, so just head over to github and download it. The link is <https://github.com/HeartShen42/Medrecord-BlockChain>. 
 
 After download the file, unzip this file. Use your terminal to cd into the  directory folder. We will assume you are in `Medrecord-BlockChain` for the instructions below.
 
