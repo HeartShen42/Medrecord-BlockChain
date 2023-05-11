@@ -1,0 +1,223 @@
+{
+	"info": {
+		"_postman_id": "1a90c1b6-0838-4e07-af4d-7d33816c4699",
+		"name": "MedRec",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23882539"
+	},
+	"item": [
+		{
+			"name": "register for patient",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:3001/register",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "register for provider",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/register",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "register for provider2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:3003/register",
+					"host": [
+						"localhost"
+					],
+					"port": "3003",
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add record  with payment for patient",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"record\": \"p1r7\",\n    \"providerAddress\": \"0x1A4B71b48498237d2817be049B4bc43faD971BcA\",\n    \"payment\": \"pay3\",\n    \"providerUrl\": \"http://localhost:3003\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3001/addRecordPay",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"addRecordPay"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getrecords",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3001/getRecords",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"getRecords"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add record for provider",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"record\": \"test2\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/addRecord",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"addRecord"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add reference",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "add viewer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Tom\",\n    \"viewerAddr\": \"0x8d70e604692151f0c01f075263013f8928c704f4\",\n    \"viewRecordID\": \"view1\",\n    \"payRecordID\": \"pay2\",\n    \"providerUrl\": \"http://localhost:3003\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3001/addViewer",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"addViewer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "provider get records",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "get shared records",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "view record",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"81748682081462773886173472197879300611162105904397170854427106189584842906368\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/viewRecord",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"viewRecord"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}

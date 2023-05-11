@@ -1,4 +1,4 @@
-pragma solidity ^0.4.15;
+pragma solidity ^0.4.22;
 
 import "./Relationship.sol";
 
@@ -62,8 +62,9 @@ contract Ledger {
         return false;
     }
 
-    function viewRecord(uint256 _id, address _viewer) public constant returns (bool) {
+    function viewRecord(uint256 _id) public {
         // check whether the validator in the references
+        address _viewer = msg.sender;
         require(references[_id].relationship != address(0));
         require(references[_id].payment[_viewer] == true);
 
@@ -75,7 +76,6 @@ contract Ledger {
         TargetR.addAnonymousViewer(msg.sender);
 
         references[_id].payment[_viewer] = false;
-        return true;
     }
 
     function getRelationship(uint256 _id) public constant returns (address) {
@@ -94,7 +94,7 @@ contract Ledger {
         return sharedRecordReferences[msg.sender];
     }
 
-    function removeSharedRecordReference(uint256 _id, address _owner) {
+    function removeSharedRecordReference(uint256 _id, address _owner) public {
         uint256[] sharedRecords = sharedRecordReferences[_owner];
         bool exist = false;
         for(uint256 i = 0; i < sharedRecords.length; i++){

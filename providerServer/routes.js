@@ -13,10 +13,15 @@ console.log('mainAddress', mainAddress);
 console.log('ledgerAddress', ledgerAddress);
 const web3 = new Web3(new Web3.providers.HttpProvider(process.env.RPC_URL));
 
+//instance ledger contract from address
+const ledgerABI = JSON.parse(fs.readFileSync('../build/contracts/Ledger.json', 'utf8'));
+const ledgerContract = new web3.eth.Contract(ledgerABI.abi, ledgerAddress);
+
 const agentABI = JSON.parse(fs.readFileSync('../build/contracts/Agent.json', 'utf8'));
 const agentContract = new web3.eth.Contract(agentABI.abi);
 let agent;
 let records = [];
+let anonymousRecords = [];
 
 const relationshipABI = JSON.parse(fs.readFileSync('../build/contracts/Relationship.json', 'utf8'));
 const relationshipContract = new web3.eth.Contract(relationshipABI.abi);
@@ -48,7 +53,7 @@ router.post('/addRecord', async (req, res) => {
         //make http request to patron server, and tr
         console.log("providerAddress", mainAddress);
         await axios.post('http://localhost:3001/addRecord', {
-            record: record,
+            recordId: record,
             providerAddress: mainAddress,
         }).then((response) => {
             console.log(response.data);
@@ -84,20 +89,6 @@ router.post('/addRelationInAgent', async (req, res) => {
     }
 });
 
-
-// //add record
-// router.post('/addRecord', async (req, res) => {
-//     try {
-//         console.log('addRecord');
-//         const { record } = req.body;
-//         records.push(record);
-//         res.json({ message: 'add record successfully' });
-//     } catch (error) {
-//         console.error('Error adding record:', error);
-//         res.status(500).json({ error: 'Error adding record' });
-//     }
-// });
-
 //get records
 router.get('/getLocalRecords', async (req, res) => {
     try {
@@ -108,41 +99,6 @@ router.get('/getLocalRecords', async (req, res) => {
         res.status(500).json({ error: 'Error getting records' });
     }
 });
-
-async function fetchViewerRelationshipData(contractAddress) {
-    const relationshipContract = new web3.eth.Contract(relationshipABI.abi, contractAddress);
-    const isViewer = await relationshipContract.methods.checkViewer(mainAddress).call(
-        { from: mainAddress }
-    );
-    console.log('isViewer', isViewer);
-    if(isViewer){
-        const recordId = await relationshipContract.methods.recordId().call();
-        const patron = await relationshipContract.methods.patron().call();
-        const provider = await relationshipContract.methods.provider().call();
-        return {
-            contractAddress,
-            recordId,
-            patron,
-            provider,
-          };
-    } else {
-        return null;
-    }
-}
-
-async function fetchProviderRelationshipData(contractAddress) {
-    const relationshipContract = new web3.eth.Contract(relationshipABI.abi, contractAddress);
-    const recordId = await relationshipContract.methods.recordId().call();
-    const provider = await relationshipContract.methods.provider().call();
-    const patron = await relationshipContract.methods.patron().call();
-  
-    return {
-      contractAddress,
-      recordId,
-      patron,
-      provider,
-    };
-}
 
 //get records
 router.get('/getRecords', async (req, res) => {
@@ -185,5 +141,101 @@ router.get('/getViewRecords', async (req, res) => {
         res.status(500).json({ error: 'Error getting records' });
     }
 });
+
+// get shared records
+router.get('/getSharedRecords', async (req, res) => {
+    try {
+        const sharedRecords = await ledgerContract.methods.getSharedRecordReferences().call({
+            from: mainAddress,
+        });
+        //transfer sharedRecords to big number
+        for (let i = 0; i < sharedRecords.length; i++) {
+            sharedRecords[i] = web3.utils.toBN(sharedRecords[i]);
+        }
+        res.json({ message: 'get shared records successfully', sharedRecords: sharedRecords });
+    } catch (error) {
+        console.error('Error getting shared records:', error);
+        res.status(500).json({ error: 'Error getting shared records' });
+    }
+});
+
+// receive anonymous record
+router.post('/receiveAnonymousRecord', async (req, res) => {
+    try {
+        console.log('receiveAnonymousRecord');
+        const { id, record } = req.body;
+        //find the record in anonymousRecords using id
+        const index = anonymousRecords.findIndex((element) => element.id == id);
+        const newRecord = {
+            id: id,
+            record: record,
+        }
+        anonymousRecords[index] = newRecord;
+
+        res.json({ message: 'receive anonymous record successfully' });
+    } catch (error) {
+        console.error('Error receiving anonymous record:', error);
+        res.status(500).json({ error: 'Error receiving anonymous record' });
+    }
+});
+
+// view record
+router.post('/viewRecord', async (req, res) => {
+    try {
+        console.log('viewRecord');
+        var { id } = req.body;
+        //convert id to big number
+        numId = web3.utils.toBN(id);
+        console.log('id', numId);
+        await ledgerContract.methods.viewRecord(id).send({
+            from: mainAddress,
+            gas: 4000000,
+        });
+        const record = { "id": id };
+        anonymousRecords.push(record);
+        console.log('view record successfully');
+        res.json({ message: 'view record successfully'});
+    } catch (error) {
+        console.error('Error viewing record:', error);
+        res.status(500).json({ error: 'Error viewing record' });
+    }
+});
+
+//utils
+
+async function fetchViewerRelationshipData(contractAddress) {
+    const relationshipContract = new web3.eth.Contract(relationshipABI.abi, contractAddress);
+    const isViewer = await relationshipContract.methods.checkViewer(mainAddress).call(
+        { from: mainAddress }
+    );
+    console.log('isViewer', isViewer);
+    if(isViewer){
+        const recordId = await relationshipContract.methods.recordId().call();
+        const patron = await relationshipContract.methods.patron().call();
+        const provider = await relationshipContract.methods.provider().call();
+        return {
+            contractAddress,
+            recordId,
+            patron,
+            provider,
+          };
+    } else {
+        return null;
+    }
+}
+
+async function fetchProviderRelationshipData(contractAddress) {
+    const relationshipContract = new web3.eth.Contract(relationshipABI.abi, contractAddress);
+    const recordId = await relationshipContract.methods.recordId().call();
+    const provider = await relationshipContract.methods.provider().call();
+    const patron = await relationshipContract.methods.patron().call();
+  
+    return {
+      contractAddress,
+      recordId,
+      patron,
+      provider,
+    };
+}
 
 module.exports = router;

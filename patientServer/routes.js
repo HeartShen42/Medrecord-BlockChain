@@ -3,6 +3,10 @@ const router = express.Router();
 const Web3 = require('web3');
 const axios = require('axios');
 
+// config proxy agent(running on http://localhost:8000)
+const { HttpsProxyAgent } = require('https-proxy-agent');
+const proxyAgent = new HttpsProxyAgent('http://localhost:8000');
+
 const fs = require('fs');
 const dotenv = require('dotenv');
 const { get } = require("http");
@@ -29,8 +33,6 @@ let relationship = [];
 
 let records = [];
 
-let unprossedRecords = [];
-
 router.post('/register', async (req, res) => {
     try {
         console.log('register');
@@ -54,11 +56,11 @@ router.post('/register', async (req, res) => {
 router.post('/addRecord', async (req, res) => {
     try {
         console.log('addRecord');
-        const { record, providerAddress } = req.body;
+        const { recordId, providerAddress, info } = req.body;
         //send relationship transaction
         const relationshipDeployOptions = {
             data: relationshipABI.bytecode,
-            arguments: [providerAddress, record, ledgerAddress, 0]
+            arguments: [providerAddress, recordId, ledgerAddress, 0]
         };
         console.log('relationshipDeployOptions', relationshipDeployOptions.arguments);
         const newRelationship = await relationshipContract.deploy(relationshipDeployOptions).send({
@@ -71,7 +73,13 @@ router.post('/addRecord', async (req, res) => {
             from: mainAddress,
             gas: 4000000,
         });
-
+        const record = {
+            "contractAddress": newRelationship.options.address,
+            "recordId": recordId,
+            "patron": mainAddress,
+            "provider": providerAddress,
+            "info": info,
+        };
         records.push(record);
         relationship.push(newRelationship);
         res.json({ message: 'add record successfully',
@@ -224,7 +232,53 @@ router.post('/addViewer',async(req,res)=>{
         
 });
 
-//get records
+//sent anonymous record to validator
+router.post('/sendAnonymousRecord', async (req, res) => {
+    try {
+        console.log('sendAnonymousRecord');
+
+        const { recordId, validatorUrl } = req.body;
+        //get record from recordId
+        let record;
+        for (let i = 0; i < records.length; i++) {
+            if (records[i].recordId === recordId) {
+                record = records[i];
+                break;
+            }
+        }
+
+        //send http request to the validator
+        const response = await axios.post(validatorUrl + '/addAnonymousRecord', {
+            record: record,
+        }, {
+            httpsAgent: proxyAgent
+        });
+        console.log('response', response);
+        res.json({ message: 'send anonymous record successfully' });
+    } catch (error) {
+        console.error('Error sending anonymous record:', error);
+        res.status(500).json({ error: 'Error sending anonymous record' });
+    }
+});
+
+//test proxy server
+router.get('/testProxy', async (req, res) => {
+    try {
+        console.log('testProxy');
+        const response = await axios.get('http://localhost:3000/register', {
+            httpsAgent: proxyAgent
+        });
+        // const response = await axios.post('http://localhost:3000/register');
+        console.log('response', response);
+        res.json({ message: 'test proxy successfully' });
+    }
+    catch (error) {
+        console.error('Error testing proxy:', error);
+        res.status(500).json({ error: 'Error testing proxy' });
+    }
+});
+
+//get local records
 router.get('/getLocalRecords', async (req, res) => {
     try {
         console.log('getRecords');
@@ -234,6 +288,9 @@ router.get('/getLocalRecords', async (req, res) => {
         res.status(500).json({ error: 'Error getting records' });
     }
 });
+
+
+
 
 // utils
 // util function that get relashion address from record id

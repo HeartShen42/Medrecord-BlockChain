@@ -1,4 +1,4 @@
-pragma solidity ^0.4.15;
+pragma solidity ^0.4.22;
 
 import "./Ledger.sol";
 contract Relationship {
@@ -82,7 +82,7 @@ function payValidator(uint256 _paymentId) public isPatron {
 }
 
 // need tx fee
-function addAnonymousViewer(address ViewerAddr) public FromLedger {
+function addAnonymousViewer(address ViewerAddr) public {
     require(!isAnonymousViewer[ViewerAddr]);
     isAnonymousViewer[ViewerAddr] = true;
 }

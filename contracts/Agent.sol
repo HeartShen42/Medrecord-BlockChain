@@ -1,4 +1,4 @@
-pragma solidity ^0.4.15;
+pragma solidity ^0.4.22;
 
 //Represents both a Patient and a Provider,
 //Patients list of relationships with different Providers
