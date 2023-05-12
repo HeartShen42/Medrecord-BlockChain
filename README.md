@@ -4,8 +4,6 @@
 
 This walkthrough is using Mac OS.(The majority of the command are same for Ubuntu 18.04 and MAC OS, Difference will be mentioned)
 
-The setup and test process can be time-consuming, so we also record a [video walkthrough](https://drive.google.com/file/d/1_KmMhrZlRR_eEWoCsYNmkV0jQwh6Z91W/view?usp=share_link).
-
 
 ## 1. Setup Geth and Truffle.
 
